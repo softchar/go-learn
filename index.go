@@ -1,11 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"math/rand"
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"my.io/models"
+	"my.io/services"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -13,9 +17,17 @@ import (
 
 func main() {
 
-	db := connect_db()
+	router := gin.Default()
 
-	batch_create_orders(db)
+	router.POST("/order/create", services.CreateOrder)
+	router.Run(":8080")
+	// rand.Seed(time.Now().UnixNano())
+
+	// db := connect_db()
+	// db.AutoMigrate(models.Order{})
+
+	// batch_create_orders(db)
+	// querys(db)
 }
 
 // 链接数据库
@@ -26,6 +38,19 @@ func connect_db() *gorm.DB {
 		panic("failed to connect database")
 	}
 	return db
+}
+
+func querys(db *gorm.DB) {
+	orders := []models.Order{}
+
+	// db.Find(&orders)
+	db.Where(models.Order{OrderType: 50}).Find(&orders)
+
+	fmt.Println(len(orders))
+
+	for _, v := range orders {
+		fmt.Println(v)
+	}
 }
 
 func create_order(db *gorm.DB) {
@@ -41,6 +66,8 @@ func batch_create_orders(db *gorm.DB) {
 		order := models.Order{}
 		order.Id = uuid.NewString()
 		order.CustomerOrderNo = time_format_tostring(time.Now()) + strconv.Itoa(i)
+		order.CreatedAt = time.Now()
+		order.OrderType = rand.Intn(100)
 		orders[i] = order
 	}
 	db.CreateInBatches(orders, 100)

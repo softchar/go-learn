@@ -1,9 +1,9 @@
-package models
+package domain
 
 import "time"
 
 type Order struct {
-	Id              string     `gorm:"column:Id;primaryKey;size:32"`
+	Id              string     `gorm:"column:Id;primaryKey;size:36"`
 	CustomerOrderNo string     `gorm:"column:CustomerOrderNo;size:64"`
 	OrderNo         string     `gorm:"column:OrderNo;size:64"`
 	CustomerCode    string     `gorm:"column:CustomerCode;size:64"`
@@ -12,4 +12,5 @@ type Order struct {
 	LadingTime      *time.Time `gorm:"column:LadingTime"`
 	Qutity          int        `gorm:"column:Qutity"`
 	Volume          float32    `gorm:"column:Volume"`
+	OrderType       int        `gorm:"column:OrderType"`
 }
