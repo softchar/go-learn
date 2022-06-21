@@ -1,20 +1,15 @@
-package services
+package apps
 
 import (
-	"my.io/services/Inputs"
+	"my/internal/orders"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type OrderServer struct {
+func CreateOrder(c *gin.Context) {
 
-}
-
-// CreateOrder 创建订单
-func (orderServer *OrderServer) CreateOrder(c *gin.Context) {
-
-	var createOrderInput Inputs.CreateOrderInput
+	var createOrderInput orders.CreateOrderInput
 
 	if err := c.ShouldBindJSON(&createOrderInput); err != nil {
 		// 插入数据
