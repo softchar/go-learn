@@ -3,14 +3,20 @@ package orders
 import "time"
 
 type Order struct {
-	Id              string     `gorm:"column:Id;primaryKey;size:36"`
-	CustomerOrderNo string     `gorm:"column:CustomerOrderNo;size:64"`
-	OrderNo         string     `gorm:"column:OrderNo;size:64"`
-	CustomerCode    string     `gorm:"column:CustomerCode;size:64"`
-	CustomerName    string     `gorm:"column:CustomerName;size:64"`
-	CreatedAt       time.Time  `gorm:"column:CreatedAt"`
-	LadingTime      *time.Time `gorm:"column:LadingTime"`
-	Qutity          int        `gorm:"column:Qutity"`
-	Volume          float32    `gorm:"column:Volume"`
-	OrderType       int        `gorm:"column:OrderType"`
+	Id              int       `gorm:"column:Id;primaryKey;size:11"`
+	Title           string    `gorm:"column:Title;size:64"`
+	CustomerOrderNo string    `gorm:"column:CustomerOrderNo;size:125"`
+	OrderNo         string    `gorm:"column:OrderNo;size:64"`
+	IsDeleted       bool      `gorm:"column:IsDeleted;size:1"`
+	CreateTime      time.Time `gorm:"column:CreateTime;size:6"`
+}
+
+func CreateOrderModel(input *CreateOrderInput) Order {
+	return Order{
+		Title:           input.Title,
+		CustomerOrderNo: input.CustomerOrderNo,
+		OrderNo:         "",
+		IsDeleted:       false,
+		CreateTime:      time.Now(),
+	}
 }

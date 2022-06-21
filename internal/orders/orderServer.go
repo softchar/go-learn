@@ -1,9 +1,15 @@
 package orders
 
 type CreateOrderInput struct {
+	Title           string
 	CustomerOrderNo string
 }
 
-func CreateOrderServ(input *CreateOrderInput) {
+type OrderServer struct {
+}
 
+func (ordSev *OrderServer) CreateOrder(input *CreateOrderInput) {
+	ordRepo := OrderRepo{}
+	order := CreateOrderModel(input)
+	ordRepo.CreateOrder(&order)
 }
